@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Maya Fotosintesis - SDN 3 GETAKAN</title>
+    <!-- Tailwind CSS untuk Desain Responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Memastikan aspek rasio 16:9 dan tanpa scrolling */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0f172a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- ================= SPLASH SCREEN ================= -->
+        <div id="splash-screen" class="absolute inset-0 z-50 bg-emerald-900 flex flex-col items-center justify-center text-white p-6 transition-opacity duration-700">
+            <div class="text-center max-w-lg">
+                <span class="bg-emerald-700 text-emerald-200 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-widest">SDN 3 Getakan</span>
+                <h1 class="text-3xl md:text-5xl font-bold mt-4 mb-2 text-emerald-300">Lab Maya Fotosintesis</h1>
+                <p class="text-emerald-100 text-sm md:text-base mb-8">Media Pembelajaran Interaktif IPA Kelas 4 (Fase B)</p>
+                
+                <!-- Indikator Loading -->
+                <div class="w-64 h-3 bg-emerald-950 rounded-full mx-auto mb-6 overflow-hidden border border-emerald-600">
+                    <div id="loading-bar" class="h-full bg-emerald-400 w-0 transition-all duration-300"></div>
+                </div>
+                <p id="loading-text" class="text-xs text-emerald-300 mb-6">Menyiapkan Laboratorium...</p>
+
+                <button id="start-btn" onclick="ulaiAplikasi()" class="hidden bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold px-8 py-3 rounded-xl shadow-lg transform transition hover:scale-105 active:scale-95 text-lg cursor-pointer">
+                    🚀 Mulai Eksperimen
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= HEADER UTAMA ================= -->
+        <header class="bg-emerald-800 text-white px-6 py-3 flex justify-between items-center shadow-md shrink-0">
+            <div class="flex items-center space-x-3">
+                <div class="bg-emerald-600 p-2 rounded-lg text-xl">🌱</div>
+                <div>
+                    <h2 class="font-bold text-base md:text-lg leading-tight">Lab Maya: Proses Fotosintesis</h2>
+                    <p class="text-xs text-emerald-200">SDN 3 Getakan • Fase B (Kelas 4)</p>
+                </div>
+            </div>
+            <!-- Tombol Reset Global -->
+            <button onclick="resetLab()" class="bg-amber-500 hover:bg-amber-400 text-amber-950 font-semibold px-3 py-1.5 rounded-lg text-xs md:text-sm flex items-center gap-1 shadow transition cursor-pointer">
+                🔄 Reset Lab
+            </button>
+        </header>
+
+        <!-- ================= NAVIGASI TAB ================= -->
+        <nav class="bg-emerald-700 px-4 py-2 flex justify-center gap-2 md:gap-4 shrink-0 shadow-inner">
+            <button onclick="gantiTab('teori')" id="tab-teori" class="tab-btn px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition bg-emerald-900 text-white shadow">📚 Teori</button>
+            <button onclick="gantiTab('prosedur')" id="tab-prosedur" class="tab-btn px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition bg-emerald-800 text-emerald-200 hover:bg-emerald-600">📋 Prosedur</button>
+            <button onclick="gantiTab('simulasi')" id="tab-simulasi" class="tab-btn px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition bg-emerald-800 text-emerald-200 hover:bg-emerald-600">🔬 Simulasi</button>
+            <button onclick="gantiTab('lkpd')" id="tab-lkpd" class="tab-btn px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition bg-emerald-800 text-emerald-200 hover:bg-emerald-600">📝 LKPD</button>
+            <button onclick="gantiTab('pengembang')" id="tab-pengembang" class="tab-btn px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition bg-emerald-800 text-emerald-200 hover:bg-emerald-600">👨‍🏫 Pengembang</button>
+        </nav>
+
+        <!-- ================= KONTEN UTAMA (AREA TAB) ================= -->
+        <main class="flex-1 p-4 md:p-6 overflow-hidden relative flex flex-col justify-center">
+
+            <!-- TAB 1: TEORI -->
+            <div id="konten-teori" class="tab-content h-full flex flex-col justify-center max-w-4xl mx-auto bg-white/80 backdrop-blur rounded-2xl p-6 shadow-md border border-emerald-100">
+                <h3 class="text-xl md:text-2xl font-bold text-emerald-900 mb-3">Apa itu Fotosintesis?</h3>
+                <p class="text-gray-700 text-sm md:text-base leading-relaxed mb-4">
+                    Fotosintesis adalah proses pembuatan makanan yang dilakukan oleh tumbuhan hijau menggunakan bantuan **cahaya matahari**. Seperti halnya manusia memasak di dapur, tumbuhan membutuhkan bahan-bahan tertentu agar dapurnya bisa bekerja!
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-center">
+                        <div class="text-3xl mb-2">☀️</div>
+                        <h4 class="font-bold text-emerald-800 text-sm">Cahaya Matahari</h4>
+                        <p class="text-xs text-gray-600 mt-1">Sumber energi utama untuk memasak.</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 text-center">
+                        <div class="text-3xl mb-2">💧</div>
+                        <h4 class="font-bold text-blue-800 text-sm">Air ($H_2O$)</h4>
+                        <p class="text-xs text-gray-600 mt-1">Diserap akar dari dalam tanah.</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-center">
+                        <div class="text-3xl mb-2">💨</div>
+                        <h4 class="font-bold text-amber-800 text-sm">Karbon Dioksida ($CO_2$)</h4>
+                        <p class="text-xs text-gray-600 mt-1">Diserap daun dari udara sekitar.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: PROSEDUR -->
+            <div id="konten-prosedur" class="tab-content hidden h-full flex flex-col justify-center max-w-4xl mx-auto bg-white/80 backdrop-blur rounded-2xl p-6 shadow-md border border-emerald-100">
+                <h3 class="text-xl md:text-2xl font-bold text-emerald-900 mb-3">Cara Menggunakan Lab Maya:</h3>
+                <ol class="list-decimal list-inside space-y-3 text-gray-700 text-sm md:text-base">
+                    <li>Pilih menu <strong class="text-emerald-700">Simulasi</strong> di atas.</li>
+                    <li>Nyalakan **Lampu/Matahari** untuk memberikan cahaya pada tanaman.</li>
+                    <li>Berikan **Air** secukupnya melalui tombol siram.</li>
+                    <li>Amati daun yang menyerap **Karbon Dioksida**.</li>
+                    <li>Perhatikan hasil akhir berupa **Oksigen ($O_2$)** dan **Glukosa (Makanan)** yang dihasilkan tumbuhan!</li>
+                </ol>
+            </div>
+
+            <!-- TAB 3: SIMULASI INTERAKTIF -->
+            <div id="konten-simulasi" class="tab-content hidden h-full flex flex-col justify-center max-w-4xl mx-auto bg-white/90 backdrop-blur rounded-2xl p-6 shadow-md border border-emerald-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    
+                    <!-- Visualisasi Tanaman -->
+                    <div class="bg-emerald-900 rounded-2xl p-6 text-center relative flex flex-col items-center justify-center h-64 md:h-72 shadow-inner overflow-hidden">
+                        <!-- Matahari / Cahaya -->
+                        <div id="sun-icon" class="absolute top-4 right-4 text-4xl transition-all duration-500 opacity-30 scale-75">☀️</div>
+                        
+                        <!-- Animasi Tanaman Sederhana -->
+                        <div id="plant-visual" class="relative">
+                            <div class="text-6xl md:text-7xl transition-all duration-500">🌱</div>
+                            <div id="bubble-container" class="absolute -top-4 left-1/2 transform -translate-x-1/2 flex gap-1 opacity-0 transition-opacity duration-300">
+                                <span class="text-xs bg-white text-emerald-800 font-bold px-1.5 py-0.5 rounded shadow">O₂ 🫧</span>
+                            </div>
+                        </div>
+
+                        <!-- Status Keterangan -->
+                        <p id="sim-status" class="text-emerald-200 text-xs md:text-sm mt-4 font-medium bg-emerald-950/60 px-4 py-1.5 rounded-full border border-emerald-800">
+                            Status: Belum lengkap (Butuh Cahaya & Air)
+                        </p>
+                    </div>
+
+                    <!-- Panel Kontrol Interaktif -->
+                    <div class="flex flex-col gap-4">
+                        <h3 class="font-bold text-emerald-900 text-lg">Panel Kontrol</h3>
+                        
+                        <!-- Tombol Interaktif 1: Cahaya -->
+                        <button onclick="toggleCahaya()" id="btn-cahaya" class="flex items-center justify-between p-3 rounded-xl border-2 border-amber-300 bg-amber-50 hover:bg-amber-100 transition text-amber-900 font-semibold text-sm cursor-pointer">
+                            <span class="flex items-center gap-2">☀️ <span id="label-cahaya">Nyalakan Cahaya</span></span>
+                            <span id="status-cahaya" class="text-xs bg-amber-200 px-2 py-1 rounded">OFF</span>
+                        </button>
+
+                        <!-- Tombol Interaktif 2: Air -->
+                        <button onclick="tambahAir()" id="btn-air" class="flex items-center justify-between p-3 rounded-xl border-2 border-blue-300 bg-blue-50 hover:bg-blue-100 transition text-blue-900 font-semibold text-sm cursor-pointer">
+                            <span class="flex items-center gap-2">💧 <span>Siram Air</span></span>
+                            <span id="status-air" class="text-xs bg-blue-200 px-2 py-1 rounded">Belum</span>
+                        </button>
+
+                        <!-- Tombol Interaktif 3: Karbon Dioksida -->
+                        <button onclick="tambahCo2()" id="btn-co2" class="flex items-center justify-between p-3 rounded-xl border-2 border-gray-300 bg-gray-50 hover:bg-gray-100 transition text-gray-800 font-semibold text-sm cursor-pointer">
+                            <span class="flex items-center gap-2">💨 <span>Buka Katup $CO_2$</span></span>
+                            <span id="status-co2" class="text-xs bg-gray-200 px-2 py-1 rounded">Tertutup</span>
+                        </button>
+
+                        <!-- Indikator Proses -->
+                        <div class="mt-2 bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                            <div class="flex justify-between text-xs font-semibold text-emerald-800 mb-1">
+                                <span>Proses Fotosintesis</span>
+                                <span id="progress-text">0%</span>
+                            </div>
+                            <div class="w-full bg-emerald-200 h-2 rounded-full overflow-hidden">
+                                <div id="progress-bar" class="bg-emerald-600 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: LKPD -->
+            <div id="konten-lkpd" class="tab-content hidden h-full flex flex-col justify-center max-w-4xl mx-auto bg-white/80 backdrop-blur rounded-2xl p-6 shadow-md border border-emerald-100">
+                <h3 class="text-xl md:text-2xl font-bold text-emerald-900 mb-3">Lembar Kerja Peserta Didik (LKPD)</h3>
+                <p class="text-gray-700 text-sm mb-4">Jawablah pertanyaan singkat berikut berdasarkan hasil simulasi yang telah kamu coba:</p>
+                
+                <div class="space-y-3 text-sm text-gray-800">
+                    <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                        <p class="font-semibold mb-1">1. Apa saja bahan utama yang dibutuhkan tanaman untuk berfotosintesis?</p>
+                        <input type="text" placeholder="Tulis jawabanmu di sini..." class="w-full p-2 text-xs border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                        <p class="font-semibold mb-1">2. Gas apa yang dihasilkan oleh tumbuhan setelah proses fotosintesis selesai?</p>
+                        <input type="text" placeholder="Tulis jawabanmu di sini..." class="w-full p-2 text-xs border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: PENGEMBANG -->
+            <div id="konten-pengembang" class="tab-content hidden h-full flex flex-col justify-center max-w-4xl mx-auto bg-white/80 backdrop-blur rounded-2xl p-6 shadow-md border border-emerald-100 text-center">
+                <div class="text-5xl mb-3">👨‍🏫</div>
+                <h3 class="text-xl md:text-2xl font-bold text-emerald-900 mb-1">Profil Pengembang</h3>
+                <p class="text-emerald-700 font-semibold mb-4">Guru SDN 3 Getakan</p>
+                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 max-w-md mx-auto text-sm text-gray-700">
+                    <p>Media lab maya interaktif ini dikhususkan untuk membantu siswa Kelas 4 (Fase B) memahami konsep sains dasar secara visual, interaktif, dan menyenangkan.</p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- ================= FOOTER ================= -->
+        <footer class="bg-emerald-900 text-emerald-300 text-center py-2 text-xs shrink-0">
+            &copy; 2026 SDN 3 Getakan • Lab Maya Interaktif Fase B
+        </footer>
+
+    </div>
+
+    <!-- ================= SKRIP JAVASCRIPT ================= -->
+    <script>
+        // --- Web Audio API untuk Efek Suara Offline ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function mainkanSuara(jenis) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            let waktu = audioCtx.currentTime;
+
+            if (jenis === 'klik') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, waktu);
+                osc.frequency.exponentialRampToValueAtTime(800, waktu + 0.08);
+                gainNode.gain.setValueAtTime(0.1, waktu);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, waktu + 0.08);
+                osc.start(waktu);
+                osc.stop(waktu + 0.08);
+            } else if (jenis === 'sukses') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, waktu);
+                osc.frequency.setValueAtTime(554.37, waktu + 0.1);
+                osc.frequency.setValueAtTime(659.25, waktu + 0.2);
+                gainNode.gain.setValueAtTime(0.15, waktu);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, waktu + 0.35);
+                osc.start(waktu);
+                osc.stop(waktu + 0.35);
+            }
+        }
+
+        // --- Simulasi Loading Splash Screen ---
+        window.addEventListener('DOMContentLoaded', () => {
+            let progress = 0;
+            const bar = document.getElementById('loading-bar');
+            const text = document.getElementById('loading-text');
+            const startBtn = document.getElementById('start-btn');
+
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    text.innerText = "Laboratorium siap digunakan!";
+                    bar.style.width = '100%';
+                    startBtn.classList.remove('hidden');
+                    mainkanSuara('sukses');
+                } else {
+                    bar.style.width = progress + '%';
+                    text.innerText = `Memuat aset pembelajaran... ${progress}%`;
+                }
+            }, 150);
+        });
+
+        function ulaiAplikasi() {
+            mainkanSuara('klik');
+            const splash = document.getElementById('splash-screen');
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.classList.add('hidden');
+            }, 700);
+        }
+
+        // --- Navigasi Tab ---
+        function gantiTab( namaTab ) {
+            mainkanSuara('klik');
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-emerald-900', 'text-white', 'shadow');
+                el.classList.add('bg-emerald-800', 'text-emerald-200');
+            });
+
+            document.getElementById(`konten-${namaTab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${namaTab}`);
+            activeBtn.classList.remove('bg-emerald-800', 'text-emerald-200');
+            activeBtn.classList.add('bg-emerald-900', 'text-white', 'shadow');
+        }
+
+        // --- Logika Simulasi Fotosintesis ---
+        let stateSimulasi = {
+            cahaya: false,
+            air: false,
+            co2: false
+        };
+
+        function updateSimulasiUI() {
+            const sunIcon = document.getElementById('sun-icon');
+            const plantVisual = document.getElementById('plant-visual').querySelector('div:first-child');
+            const bubbleContainer = document.getElementById('bubble-container');
+            const simStatus = document.getElementById('sim-status');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+
+            let poinAktif = 0;
+            if (stateSimulasi.cahaya) poinAktif++;
+            if (stateSimulasi.air) poinAktif++;
+            if (stateSimulasi.co2) poinAktif++;
+
+            let persen = (poinAktif / 3) * 100;
+            progressBar.style.width = persen + '%';
+            progressText.innerText = persen + '%';
+
+            // Visual Cahaya
+            if (stateSimulasi.cahaya) {
+                sunIcon.style.opacity = '1';
+                sunIcon.style.transform = 'scale(1.2)';
+            } else {
+                sunIcon.style.opacity = '0.3';
+                sunIcon.style.transform = 'scale(0.75)';
+            }
+
+            // Status Lengkap
+            if (poinAktif === 3) {
+                plantVisual.innerText = "🌳";
+                bubbleContainer.classList.remove('opacity-0');
+                simStatus.innerText = "✨ Hebat! Fotosintesis Berhasil: Menghasilkan O₂ & Glukosa!";
+                simStatus.className = "text-emerald-200 text-xs md:text-sm mt-4 font-medium bg-emerald-700 px-4 py-1.5 rounded-full border border-emerald-500 animate-pulse";
+            } else {
+                plantVisual.innerText = "🌱";
+                bubbleContainer.classList.add('opacity-0');
+                simStatus.innerText = `Status: Kurang ${3 - poinAktif} komponen lagi untuk fotosintesis.`;
+                simStatus.className = "text-emerald-200 text-xs md:text-sm mt-4 font-medium bg-emerald-950/60 px-4 py-1.5 rounded-full border border-emerald-800";
+            }
+        }
+
+        function toggleCahaya() {
+            mainkanSuara('klik');
+            stateSimulasi.cahaya = !stateSimulasi.cahaya;
+            const btn = document.getElementById('status-cahaya');
+            const labelCahaya = document.getElementById('label-cahaya');
+            if (stateSimulasi.cahaya) {
+                btn.innerText = "ON";
+                btn.className = "text-xs bg-amber-400 text-amber-950 font-bold px-2 py-1 rounded";
+                labelCahaya.innerText = "Matikan Cahaya";
+            } else {
+                btn.innerText = "OFF";
+                btn.className = "text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded";
+                labelCahaya.innerText = "Nyalakan Cahaya";
+            }
+            updateSimulasiUI();
+            if(stateSimulasi.cahaya && stateSimulasi.air && stateSimulasi.co2) mainkanSuara('sukses');
+        }
+
+        function tambahAir() {
+            mainkanSuara('klik');
+            stateSimulasi.air = !stateSimulasi.air;
+            const btn = document.getElementById('status-air');
+            if (stateSimulasi.air) {
+                btn.innerText = "Disiram 💧";
+                btn.className = "text-xs bg-blue-500 text-white font-bold px-2 py-1 rounded";
+            } else {
+                btn.innerText = "Belum";
+                btn.className = "text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded";
+            }
+            updateSimulasiUI();
+            if(stateSimulasi.cahaya && stateSimulasi.air && stateSimulasi.co2) mainkanSuara('sukses');
+        }
+
+        function tambahCo2() {
+            mainkanSuara('klik');
+            stateSimulasi.co2 = !stateSimulasi.co2;
+            const btn = document.getElementById('status-co2');
+            if (stateSimulasi.co2) {
+                btn.innerText = "Terbuka 💨";
+                btn.className = "text-xs bg-emerald-600 text-white font-bold px-2 py-1 rounded";
+            } else {
+                btn.innerText = "Tertutup";
+                btn.className = "text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded";
+            }
+            updateSimulasiUI();
+            if(stateSimulasi.cahaya && stateSimulasi.air && stateSimulasi.co2) mainkanSuara('sukses');
+        }
+
+        // --- Tombol Reset Global ---
+        function resetLab() {
+            mainkanSuara('klik');
+            stateSimulasi = { cahaya: false, air: false, co2: false };
+            
+            // Reset UI Tombol Cahaya
+            document.getElementById('status-cahaya').innerText = "OFF";
+            document.getElementById('status-cahaya').className = "text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded";
+            document.getElementById('label-cahaya').innerText = "Nyalakan Cahaya";
+
+            // Reset UI Tombol Air
+            document.getElementById('status-air').innerText = "Belum";
+            document.getElementById('status-air').className = "text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded";
+
+            // Reset UI Tombol CO2
+            document.getElementById('status-co2').innerText = "Tertutup";
+            document.getElementById('status-co2').className = "text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded";
+
+            updateSimulasiUI();
+            gantiTab('teori');
+        }
+    </script>
+</body>
+</html>
